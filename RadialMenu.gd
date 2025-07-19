@@ -499,7 +499,7 @@ func activate_selected():
 	Opens a submenu or closes the menu and signals an id, depending on what
 	was selected
 	"""
-	if selected != -1 and menu_items[selected].id is Control:
+	if selected >= 0 and selected < menu_items.size() and menu_items[selected].id is Control:
 		open_submenu(menu_items[selected].id, selected)	
 	else:	
 		close_menu()	
@@ -684,6 +684,8 @@ func _get_texture(name):
 		
 	
 func _clear_items():
+	if not is_inside_tree():
+		return
 	var n = $ItemIcons
 	if not n:
 		return
@@ -842,7 +844,7 @@ func signal_id():
 	"""
 	Emits either an 'item_selected' or 'canceled' signal
 	"""
-	if selected != -1 and menu_items[selected] != null:
+	if selected >= 0 and selected < menu_items.size() and menu_items[selected] != null:
 		emit_signal("item_selected", menu_items[selected].id, opened_at_position)
 	elif selected == -1:
 		emit_signal("canceled")
